@@ -1,0 +1,9 @@
+apiVersion: v2
+version: 1.0.0
+name: eyetap-frontend
+description: An interactive Eye-Tracking Annotation Platform
+home: https://github.com/eye-tap/helm-chart
+maintainers: 
+  - name: Janis Hutz
+    email: development@janishutz.command
+    url: https://janishutz.com

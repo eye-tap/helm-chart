@@ -1,0 +1,23 @@
+config:
+  namespace: eyetap
+
+app:
+  image:
+    repository: ghcr.io/eye-tap/frontend
+    tag: latest
+    pullPolicy: Always
+
+  name: eyetap-frontend
+  port: 8080
+
+  ingress:
+    enabled: true
+    url: null
+
+  resources:
+    requests:
+      cpu: null
+      memory: null
+    limits:
+      cpu: null
+      memory: null

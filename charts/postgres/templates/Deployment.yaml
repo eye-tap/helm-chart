@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eyetap-postgres
+  namespace: default
+  labels:
+    app: eyetap-postgres
+spec:
+  selector:
+    matchLabels:
+      app: eyetap-postgres
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: Recreate
+  template:
+    spec:
+      containers:
+      - name: eyetap-postgres
+        image: {{ .Values.app.image.repository }}
+        imagePullPolicy: {{ .Values.app.image.pullPolicy }}
+        livenessProbe:
+          tcpSocket:
+            port: {{ .Values.app.port }}
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: {{ .Values.app.port }}
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        env:
+          - name: POSTGRES_DB
+            value: {{ .Values.config.db.db }}
+          - name: POSTGRES_USERNAME
+            value: {{ .Values.config.db.username }}
+          - name: POSTGRES_PASSWORD
+            value: {{ .Values.config.db.password }}
+        ports:
+          - containerPort: {{ .Values.app.port }}
+        restartPolicy: {{ .Values.app.restartPolicy }}
+        {{- if Values.app.resources }}
+        resources:
+          {{- if Values.app.resources.requests }}
+          requests:
+            cpu: {{ .Values.app.resources.requests.cpu }}
+            memory: {{ .Values.app.resources.requests.memory }}
+          {{- end }}
+          {{- if Values.app.resources.limits }}
+          limits:
+            cpu: {{ .Values.app.resources.limits.cpu }}
+            memory: {{ .Values.app.resources.limits.memory }}
+          {{- end }}
+        {{- end }}
+        {{- if .Values.app.pvcs }}
+        volumeMounts:
+          {{- range $index, $pvc := .Values.app.pvcs }}
+          - mountPath: {{ $pvc.mountPath | quote }}
+            {{- if $pvc.name }}
+            name: pvc-{{ $pvc.name }}
+            {{- else }}
+            name: pvc-eyetap-postgres-{{ $pvc.index }}
+            {{- end }}
+          {{- end }}
+        {{- end }}
+{{- range $index, $pvc := .Values.app.pvcs }}
+{{- if not $pvc.existingClaim }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $pvc.name | default (printf "%s-%d" $.Release.Name $index) }}
+  namespace: {{ .Values.config.namespace }}
+spec:
+  # AKS: default,managed-premium
+  # GKE: standard
+  # EKS: gp2 (custom)
+  # Rook: rook-ceph-block,rook-ceph-fs
+  storageClassName: {{ $pvc.storageClassName }}
+  accessModes:
+    - {{ $pvc.accessMode }}
+  resources:
+    requests:
+      storage: {{ $pvc.storage }}
+{{- end }}
+{{- end }}

@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  namespace: default
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: Recreate
+  template:
+    spec:
+      containers:
+      - name: {{ .Release.Name }}
+        image: {{ .Values.app.image.repository }}
+        imagePullPolicy: {{ .Values.app.image.pullPolicy }}
+        livenessProbe:
+          tcpSocket:
+            port: {{ .Values.app.port }}
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: {{ .Values.app.port }}
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+          periodSeconds: 10
+        ports:
+          - containerPort: {{ .Values.app.port }}
+        restartPolicy: {{ .Values.app.restartPolicy }}
+        {{- if Values.app.resources }}
+        resources:
+          {{- if Values.app.resources.requests }}
+          requests:
+            cpu: {{ .Values.app.resources.requests.cpu }}
+            memory: {{ .Values.app.resources.requests.memory }}
+          {{- end }}
+          {{- if Values.app.resources.limits }}
+          limits:
+            cpu: {{ .Values.app.resources.limits.cpu }}
+            memory: {{ .Values.app.resources.limits.memory }}
+          {{- end }}
+        {{- end }}

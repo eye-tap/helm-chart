@@ -1,0 +1,21 @@
+config:
+  namespace: eyetap
+  clusterName: cluster
+  db: 
+    url: "eyetap-postgres.{{ .Values.config.namespace }}.svc.{{ .Values.config.clusterName }}.local:5432/{{ .Values.config.db.db }}"
+    username: eyetap
+    db: eyetap
+    password: eyetap
+
+app:
+  image:
+    repository: ghcr.io/eye-tap/backend
+    tag: latest
+    pullPolicy: Always
+
+  name: eyetap-backend
+  port: 8080
+
+  ingress:
+    enabled: true
+    url: null
