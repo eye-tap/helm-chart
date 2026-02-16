@@ -2,4 +2,8 @@
 Helm chart for EyeTAP
 
 ## Usage
-<!-- TODO: Note on pvcs for postgres -->
+Copy the `/template` directory into a git repo.
+
+The folder also contains both a github and gitlab actions file that shows an example deployment.
+
+NOTE: This has not been created yet
