@@ -2,6 +2,9 @@ config:
   namespace: eyetap
   clusterName: cluster
   db: 
+    # The URL to connect to. Should be of form <host>:<port>/<db>
+    # For containers in the same namespace, you can omit the full URL (default),
+    # or use the decommented url below otherwise
     url: "eyetap-postgres:5432/{{ .Values.config.db.db }}"
     # url: "eyetap-postgres.{{ .Values.config.namespace }}.svc.{{ .Values.config.clusterName }}.local:5432/{{ .Values.config.db.db }}"
     username: eyetap
@@ -10,13 +13,18 @@ config:
 
 app:
   image:
+    # The image to pull (should be left untouched)
     repository: ghcr.io/eye-tap/backend
+    # The tag to pull in
     tag: latest
+    # Kubernetes Pull Policy setting
     pullPolicy: Always
 
+  # The name for the container
   name: eyetap-backend
   port: 8080
 
+  # Enable or disable ingress and set the URL
   ingress:
     enabled: true
     url: null

@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ .Values.app.name }}
   namespace: {{ .Values.config.namespace }}
   labels:
-    app: {{ .Release.Name }}
+    app: {{ .Values.app.name }}
 spec:
   selector:
     matchLabels:
-      app: {{ .Release.Name }}
+      app: {{ .Values.app.name }}
   replicas: 1
   strategy:
     rollingUpdate:
@@ -18,7 +18,7 @@ spec:
   template:
     spec:
       containers:
-      - name: {{ .Release.Name }}
+      - name: {{ .Values.app.name }}
         image: {{ .Values.app.image.repository }}
         imagePullPolicy: {{ .Values.app.image.pullPolicy }}
         livenessProbe:
@@ -67,7 +67,7 @@ spec:
             {{- if $pvc.name }}
             name: pvc-{{ $pvc.name }}
             {{- else }}
-            name: pvc-{{ .Release.Name }}-{{ $pvc.index }}
+            name: pvc-{{ .Values.app.name }}-{{ $pvc.index }}
             {{- end }}
           {{- end }}
         {{- end }}
@@ -77,7 +77,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ .Values.app.name }}
   namespace: {{ .Values.config.namespace }}
 spec:
   # AKS: default,managed-premium
