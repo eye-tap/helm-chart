@@ -51,6 +51,7 @@ jobs:
           --atomic
           -f "./frontend/values.yaml"
           --timeout "${HELM_TIMEOUT}"
+          --set config.namespace="${K8S_NAMESPACE}"
       - name: Publish to GitHub Container Registry
         run: |
           helm upgrade

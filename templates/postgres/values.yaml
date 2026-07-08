@@ -1,0 +1,25 @@
+config:
+  namespace: eyetap
+  clusterName: cluster
+  db: 
+    username: eyetap
+    db: eyetap
+    password: eyetap
+
+app:
+  image:
+    repository: postgres
+    tag: 18
+    pullPolicy: Always
+
+  restartPolicy: OnFailure
+  port: 5432
+  name: eyetap-postgres
+
+  # Set the storage class of the PVC below
+  pvcs:
+    - accessMode: ReadWriteOnce
+      name: default
+      storage: 1Gi
+      storageClassName: null
+      existingClaim: false

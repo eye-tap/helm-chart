@@ -66,6 +66,7 @@ deploy-frontend:
       --atomic
       -f "./frontend/values.yaml"
       --timeout "${HELM_TIMEOUT}"
+      --set config.namespace="${K8S_NAMESPACE}"
 
 # Backend
 deploy-backend:
