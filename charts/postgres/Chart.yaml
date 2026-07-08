@@ -1,5 +1,5 @@
 apiVersion: v2
-version: 1.0.0
+version: 2.0.0
 name: eyetap-postgres
 description: An interactive Eye-Tracking Annotation Platform
 home: https://github.com/eye-tap/helm-chart
