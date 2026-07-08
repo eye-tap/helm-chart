@@ -10,10 +10,6 @@ app:
   name: eyetap-frontend
   port: 8080
 
-  ingress:
-    enabled: true
-    url: null
-
   resources:
     requests:
       cpu: null

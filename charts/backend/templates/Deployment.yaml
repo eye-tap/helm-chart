@@ -44,6 +44,12 @@ spec:
             value: {{ .Values.config.db.username }}
           - name: SPRING_DATASOURCE_PASSWORD
             value: {{ .Values.config.db.password }}
+          - name: ALLOWED_CORS_ORIGINS
+            value: {{ .Values.config.cors }}
+          - name: JWT_SECRET_KEY
+            value: {{ .Values.config.secrets.jwt }}
+          - name: DEBUG_SECRET
+            value: {{ .Values.config.secrets.debug }}
         ports:
           - containerPort: {{ .Values.app.port }}
         restartPolicy: {{ .Values.app.restartPolicy }}

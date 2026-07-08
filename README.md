@@ -8,4 +8,6 @@ The folder also contains both a github and gitlab actions file that shows an exa
 
 NOTE: This has not been created yet
 
-NOTE 2: Ingress is currently not set up yet, so any ingress configuration isn't happening just yet
+## Ingress
+This helm chart does not automatically take care of any ingress configuration.
+If you are using ingress (or Gateway), you need to manually update these configs, or update this helm chart and host it yourself.

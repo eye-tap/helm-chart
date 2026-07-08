@@ -1,9 +1,12 @@
 config:
   namespace: eyetap
   clusterName: cluster
+  cors: ''
+  secrets:
+    jwt: ''
+    debug: ''
   db: 
-    url: "eyetap-postgres:5432/{{ .Values.config.db.db }}"
-    # url: "eyetap-postgres.{{ .Values.config.namespace }}.svc.{{ .Values.config.clusterName }}.local:5432/{{ .Values.config.db.db }}"
+    url: "eyetap-pg.{{ .Values.config.namespace }}.svc.{{ .Values.config.clusterName }}.local:5432/{{ .Values.config.db.db }}"
     username: eyetap
     db: eyetap
     password: eyetap
@@ -16,7 +19,3 @@ app:
 
   name: eyetap-backend
   port: 8080
-
-  ingress:
-    enabled: true
-    url: null

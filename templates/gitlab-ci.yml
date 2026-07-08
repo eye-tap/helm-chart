@@ -1,0 +1,93 @@
+# ┌                                                 ┐
+# │                 # CONFIGURATION                 │
+# └                                                 ┘
+stages:
+  - deploy:db
+  - deploy:app
+
+
+variables:
+  BASE_URL: eyetap.yourdomain.tld
+
+  # Helm Timeout
+  HELM_TIMEOUT: 5m0s
+
+  # Kube configuartion
+  K8S_NAMESPACE: eyetap
+  K8S_CONTEXT: eyetap
+  K8S_CLUSTER_NAME: eyetap
+
+  # The helm chart to use
+  HELM_CHART: oci://eye-tap.github.io/helm-chart/charts
+
+
+# ─────────────────────────────────────────────────────────────────────
+# ┌                                                 ┐
+# │                    # DEPLOY                     │
+# └                                                 ┘
+.deploy-template:
+  stage: deploy
+  image:
+    name: alpine/helm:3.14.1
+    entrypoint: ["bash"]
+
+# Database
+deploy-postgres:
+  extends: .deploy-template
+  stage: deploy:db
+  script:
+    - >
+      helm upgrade
+      eyetap-pg
+      ${HELM_CHART}/postgres
+      --namespace $K8S_NAMESPACE
+      --kube-context $K8S_CONTEXT
+      --install
+      --atomic
+      -f "./postgres/values.yaml"
+      --timeout "${HELM_TIMEOUT}"
+      --set config.db="${POSTGRES_DB}"
+      --set config.username="${POSTGRES_USER}"
+      --set config.password="${POSTGRES_PASSWORD}"
+
+# Frontend
+deploy-frontend:
+  extends: .deploy-template
+  stage: deploy:app
+  script:
+    - >
+      helm upgrade
+      eyetap-frontend
+      ${HELM_CHART}/frontend
+      --version ${HELM_CHART_VERSION}
+      --namespace $K8S_NAMESPACE
+      --kube-context $K8S_CONTEXT
+      --install
+      --atomic
+      -f "./frontend/values.yaml"
+      --timeout "${HELM_TIMEOUT}"
+
+# Backend
+deploy-backend:
+  extends: .deploy-template
+  stage: deploy:app
+  script:
+    - >
+      helm upgrade
+      eyetap-backend
+      ${HELM_CHART}/backend
+      --namespace $K8S_NAMESPACE
+      --kube-context $K8S_CONTEXT
+      --install
+      --atomic
+      -f "./backend/values.yaml"
+      --timeout "${HELM_TIMEOUT}"
+      --set config.db.url="${RELEASE_NAME}-pg.${K8S_NAMESPACE}.svc.cluster.local:5432/${POSTGRES_DB}"
+      --set config.cors="https://${BASE_URL}" 
+      --set config.namespace="${K8S_NAMESPACE}"
+      --set config.clusterName="${K8S_CLUSTER_NAME}"
+      --set config.db.username="${POSTGRES_USER}"
+      --set config.db.db="${POSTGRES_DB}"
+      --set config.db.password="${POSTGRES_PASSWORD}"
+      --set config.secrets.jwt="secret" # TODO: Update this
+      --set config.secrets.debug="secret" # TODO: Update this
