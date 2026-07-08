@@ -2,6 +2,19 @@ apiVersion: v1
 entries:
   eyetap-backend:
   - apiVersion: v2
+    created: "2026-07-08T12:54:28.535698722Z"
+    description: An interactive Eye-Tracking Annotation Platform
+    digest: 73218d354706d7d3d5e1e650b61062d908b13f3f4fe4510c36506041d9ab3507
+    home: https://github.com/eye-tap/helm-chart
+    maintainers:
+    - email: development@janishutz.command
+      name: Janis Hutz
+      url: https://janishutz.com
+    name: eyetap-backend
+    urls:
+    - https://github.com/eye-tap/helm-chart/releases/download/eyetap-backend-2.0.0/eyetap-backend-2.0.0.tgz
+    version: 2.0.0
+  - apiVersion: v2
     created: "2026-02-16T20:18:54.088117562Z"
     description: An interactive Eye-Tracking Annotation Platform
     digest: 4b16e212b3b3f8c95a87214d0ecce50bf62e128245e35094fd0e6c35f1baa501
@@ -15,6 +28,19 @@ entries:
     - https://github.com/eye-tap/helm-chart/releases/download/eyetap-backend-1.0.0/eyetap-backend-1.0.0.tgz
     version: 1.0.0
   eyetap-frontend:
+  - apiVersion: v2
+    created: "2026-07-08T12:54:28.69452274Z"
+    description: An interactive Eye-Tracking Annotation Platform
+    digest: 10c65997a3a5039c85ec2bf28f2d002a89d2f947e8d8dd96c1bebf1b227b71e7
+    home: https://github.com/eye-tap/helm-chart
+    maintainers:
+    - email: development@janishutz.command
+      name: Janis Hutz
+      url: https://janishutz.com
+    name: eyetap-frontend
+    urls:
+    - https://github.com/eye-tap/helm-chart/releases/download/eyetap-frontend-2.0.0/eyetap-frontend-2.0.0.tgz
+    version: 2.0.0
   - apiVersion: v2
     created: "2026-02-16T20:18:54.25287804Z"
     description: An interactive Eye-Tracking Annotation Platform
@@ -30,6 +56,19 @@ entries:
     version: 1.0.0
   eyetap-postgres:
   - apiVersion: v2
+    created: "2026-07-08T12:54:28.868085197Z"
+    description: An interactive Eye-Tracking Annotation Platform
+    digest: 89f85922b3135a360a80586f4d65f45af9eb8c502ea9e6503839d982d93bfe78
+    home: https://github.com/eye-tap/helm-chart
+    maintainers:
+    - email: development@janishutz.command
+      name: Janis Hutz
+      url: https://janishutz.com
+    name: eyetap-postgres
+    urls:
+    - https://github.com/eye-tap/helm-chart/releases/download/eyetap-postgres-2.0.0/eyetap-postgres-2.0.0.tgz
+    version: 2.0.0
+  - apiVersion: v2
     created: "2026-02-16T20:18:54.403987144Z"
     description: An interactive Eye-Tracking Annotation Platform
     digest: de967230656491671347c518a232d6c605282d763404e2d7f46d23f5898b2eee
@@ -42,4 +81,4 @@ entries:
     urls:
     - https://github.com/eye-tap/helm-chart/releases/download/eyetap-postgres-1.0.0/eyetap-postgres-1.0.0.tgz
     version: 1.0.0
-generated: "2026-02-16T20:18:54.403998826Z"
+generated: "2026-07-08T12:54:28.868100511Z"
